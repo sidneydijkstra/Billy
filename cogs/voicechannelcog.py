@@ -10,6 +10,7 @@ from factories.audiofactory import AudioFactory
 
 class VoiceChannelCog(commands.Cog):
     def __init__(self, bot):
+        self.JINGLE_PLAY_CHANCE = 0.4
         self.bot = bot
         self.queue = []
         print(os.listdir("./audio/radio/"))
@@ -57,7 +58,8 @@ class VoiceChannelCog(commands.Cog):
 
         self.queue.append(audioInfo)
 
-        await ctx.message.delete()
+        if ctx.message:
+            await ctx.message.delete()
 
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if not voice_client.is_playing():
@@ -97,7 +99,7 @@ class VoiceChannelCog(commands.Cog):
         if voice_client and not voice_client.is_playing() and self.queue:
             audioInfo = self.queue.pop(0)
             await ctx.message.channel.send("B-B-B-Billy Radio met een verzoekje van %s!" % (audioInfo.auther), embed=EmbeddedFactory.generateAudioInfoMessage(audioInfo))
-            voice_client.play(audioInfo.ffmpegAudio, after=lambda ex: asyncio.run_coroutine_threadsafe(self._jingle(ctx), self.bot.loop) if random.random() < 0.2 else asyncio.run_coroutine_threadsafe(self._play(ctx), self.bot.loop))
+            voice_client.play(audioInfo.ffmpegAudio, after=lambda ex: asyncio.run_coroutine_threadsafe(self._jingle(ctx), self.bot.loop) if random.random() < self.JINGLE_PLAY_CHANCE else asyncio.run_coroutine_threadsafe(self._play(ctx), self.bot.loop))
 
     async def _jingle(self, ctx):
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
