@@ -26,6 +26,17 @@ class VoiceChannelCog(commands.Cog):
     async def leave(self, ctx):
         await AudioFactory.leaveChannel(ctx.bot, ctx.author)
 
+    @commands.command(name="fplay")
+    async def fplay(self, ctx):
+        await AudioFactory.joinChannel(ctx.bot, ctx.author)
+
+        voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
+        if voice_client and not voice_client.is_playing():
+            jingles = os.listdir("./audio/radio")
+            jingle = jingles[random.randint(0, len(jingles) - 1)]
+            voice_client.play(AudioFactory.getVideoFromSource("./audio/radio/" + jingle), after=lambda ex: ptint(ex) if ex else print("done fplay!"))
+
+
     @commands.command(name="play")
     async def play(self, ctx, *args):
         await AudioFactory.joinChannel(ctx.bot, ctx.author)
@@ -92,7 +103,7 @@ class VoiceChannelCog(commands.Cog):
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and not voice_client.is_playing() and self.queue:
             jingles = os.listdir("./audio/radio")
-            jingle = jingles[random.randint(0, len(jingles))]
+            jingle = jingles[random.randint(0, len(jingles) - 1)]
             voice_client.play(AudioFactory.getVideoFromSource("./audio/radio/" + jingle), after=lambda ex: asyncio.run_coroutine_threadsafe(self._play(ctx), self.bot.loop))
 
 

@@ -10,7 +10,7 @@ def main():
     #GUILD = os.getenv('DISCORD_GUILD')
 
     bot = Billy(
-        command_prefix="!",
+        command_prefix="$",
         description='Robot Billy'
     )
 
