@@ -16,4 +16,8 @@ class Billy(commands.Bot):
             embeddedBlock = EmbeddedFactory.generateMentionMessage()
             await message.channel.send("Hey Hoi, " + message.author.name + "! Ik zie dat je me een bericht stuurt, dus ik denk dat je me aandacht wil!", embed=embeddedBlock)
         else:
+
+            if message.content[0] == "$":
+                print("Processing command from %s, %s" % (message.author.name, message.content))
+
             await self.process_commands(message)

@@ -13,7 +13,6 @@ class VoiceChannelCog(commands.Cog):
         self.JINGLE_PLAY_CHANCE = 0.4
         self.bot = bot
         self.queue = []
-        print(os.listdir("./audio/radio/"))
 
     @commands.command(name="load")
     async def load(self, ctx, arg1):
