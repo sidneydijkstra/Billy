@@ -14,6 +14,14 @@ class VoiceChannelCog(commands.Cog):
         self.bot = bot
         self.queue = []
 
+        jingleFiles = os.listdir("./audio/radio")
+        self.jingles = []
+        for jingle in jingleFiles:
+            self.jingles.append("./audio/radio/" + jingle)
+
+        self.shuffleJingles()
+
+
     @commands.command(name="load")
     async def load(self, ctx, arg1):
         await AudioFactory.loadVideo(arg1)
@@ -32,9 +40,8 @@ class VoiceChannelCog(commands.Cog):
 
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and not voice_client.is_playing():
-            jingles = os.listdir("./audio/radio")
-            jingle = jingles[random.randint(0, len(jingles) - 1)]
-            voice_client.play(AudioFactory.getVideoFromSource("./audio/radio/" + jingle), after=lambda ex: ptint(ex) if ex else print("done fplay!"))
+            jingle = self.getJingle()
+            voice_client.play(AudioFactory.getVideoFromSource(jingle), after=lambda ex: ptint(ex) if ex else print("done fplay! -> %d" % (len(self.shuffledJingles))))
 
 
     @commands.command(name="play")
@@ -103,11 +110,18 @@ class VoiceChannelCog(commands.Cog):
     async def _jingle(self, ctx):
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and not voice_client.is_playing() and self.queue:
-            jingles = os.listdir("./audio/radio")
-            jingle = jingles[random.randint(0, len(jingles) - 1)]
-            voice_client.play(AudioFactory.getVideoFromSource("./audio/radio/" + jingle), after=lambda ex: asyncio.run_coroutine_threadsafe(self._play(ctx), self.bot.loop))
+            jingle = self.getJingle()
+            voice_client.play(AudioFactory.getVideoFromSource(jingle), after=lambda ex: asyncio.run_coroutine_threadsafe(self._play(ctx), self.bot.loop))
 
+    def getJingle(self):
+        if len(self.shuffledJingles) > 0:
+            return self.shuffledJingles.pop(0)
+        else:
+            self.shuffleJingles()
+            return self.shuffledJingles.pop(0)
 
+    def shuffleJingles(self):
+        self.shuffledJingles = random.sample(self.jingles, len(self.jingles))
 
 def setup(bot):
     bot.add_cog(VoiceChannelCog(bot))
