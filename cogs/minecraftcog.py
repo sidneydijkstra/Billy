@@ -4,17 +4,14 @@ from discord.ext import commands
 
 import subprocess
 
+bashCommand = "screen -list | grep -q minecraft"
+
 class MinecraftCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(name="mstatus", aliases=["ms", "minecraftstatus"])
     async def mStatus(self, ctx):
-        bashCommand = """if ! screen -list | grep -q minecraft; then
-    echo 'False'
-else
-    echo 'True'
-fi"""
         process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
         output, error = process.communicate()
         print(output)
