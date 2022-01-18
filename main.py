@@ -16,6 +16,7 @@ def main():
 
     bot.load_extension("cogs.voicechannelcog")
     bot.load_extension("cogs.admincog")
+    bot.load_extension("cogs.minecraftcog")
     bot.run(TOKEN, bot=True)
 
 if __name__ == '__main__':
