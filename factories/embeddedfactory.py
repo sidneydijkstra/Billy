@@ -23,3 +23,7 @@ class EmbeddedFactory:
             embeddedBlock.add_field(name=("[5/%d]" % (len(queue))), value="En nog meer...")
 
         return embeddedBlock
+
+    def generateAudioQueueEmptyMessage():
+        embeddedBlock = discord.Embed(title="Billy FM heeft niks af te spelen!", description="Doe !play om een nummer aan te vragen!", color=0xff0000)
+        return embeddedBlock

@@ -84,6 +84,8 @@ class VoiceChannelCog(commands.Cog):
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and self.queue:
             await ctx.message.channel.send(embed=EmbeddedFactory.generateAudioQueueMessage(self.queue))
+        else if voice_client:
+            await ctx.message.channel.send(embed=EmbeddedFactory.generateAudioQueueEmptyMessage())
 
     @commands.command(name="stop")
     async def stop(self, ctx):
