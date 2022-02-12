@@ -9,7 +9,11 @@ class EmbeddedFactory:
         return embeddedBlock
 
     def generateAudioInfoMessage(audioInfo):
-        embeddedBlock = discord.Embed(title=("%s [%s]" % (audioInfo.title, audioInfo.duration)), description=("%d Views - By %s" % (audioInfo.views, audioInfo.uploader)), color=0xff0000)
+        embeddedBlock = discord.Embed(title=("%s [%s]" % (audioInfo.title, audioInfo.duration)), description=("%d Views - By %s - id: %d" % (audioInfo.views, audioInfo.uploader, audioInfo.id)), color=0xff0000)
+        return embeddedBlock
+
+    def generateAudioRemoveMessage(audioInfo):
+        embeddedBlock = discord.Embed(title=("%s is verwijderd" % (audioInfo.title)), description=("%s heeft dit nummer uit de wachtrij gehaald! Klaag hem aan!" % (audioInfo.auther)), color=0xff0000)
         return embeddedBlock
 
     def generateAudioQueueMessage(queue):
@@ -17,7 +21,7 @@ class EmbeddedFactory:
         size = len(queue) if len(queue) <= 5 else 5
         for i in range(size):
             audioInfo = queue[i]
-            embeddedBlock.add_field(name=("[%d]: %s [%s]" % (i+1, audioInfo.title, audioInfo.duration)), value=("%d Views - By %s" % (audioInfo.views, audioInfo.uploader)), inline=False)
+            embeddedBlock.add_field(name=("%d: %s [%s]" % (i+1, audioInfo.title, audioInfo.duration)), value=("%d Views - By %s - id: %d" % (audioInfo.views, audioInfo.uploader, audioInfo.id)), inline=False)
 
         if len(queue) > 5:
             embeddedBlock.add_field(name=("[5/%d]" % (len(queue))), value="En nog meer...")

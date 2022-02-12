@@ -6,7 +6,7 @@ class AdminCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="shutdown", aliases=["q", "quit", "sd"])
+    @commands.command(name="shutdown", aliases=["q", "quit", "sd"], help = "- Shutdown the bot.")
     @commands.is_owner()
     async def shutdown(self, ctx):
         voice = ctx.voice_client
@@ -14,7 +14,7 @@ class AdminCog(commands.Cog):
             await voice.disconnect()
         await ctx.bot.close()
 
-    @commands.command(name="python", aliases=["py"])
+    @commands.command(name="python", aliases=["py"], help = "- Run python code.")
     @commands.is_owner()
     async def python(self, ctx):
         if not ctx.message == None and not ctx.message.reference == None:

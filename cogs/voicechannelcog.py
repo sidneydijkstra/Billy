@@ -21,20 +21,15 @@ class VoiceChannelCog(commands.Cog):
 
         self.shuffleJingles()
 
-
-    @commands.command(name="load")
-    async def load(self, ctx, arg1):
-        await AudioFactory.loadVideo(arg1)
-
-    @commands.command(name="join")
+    @commands.command(name="join", help = "- Let the bot join youre current channel")
     async def join(self, ctx):
         await AudioFactory.joinChannel(ctx.bot, ctx.author)
 
-    @commands.command(name="leave")
+    @commands.command(name="leave", help = "- Remove the bot from the channel.")
     async def leave(self, ctx):
         await AudioFactory.leaveChannel(ctx.bot, ctx.author)
 
-    @commands.command(name="fplay")
+    @commands.command(name="fplay", help = "- Play a random jingle.")
     async def fplay(self, ctx):
         await AudioFactory.joinChannel(ctx.bot, ctx.author)
 
@@ -44,7 +39,7 @@ class VoiceChannelCog(commands.Cog):
             voice_client.play(AudioFactory.getVideoFromSource(jingle), after=lambda ex: ptint(ex) if ex else print("done fplay! -> %d" % (len(self.shuffledJingles))))
 
 
-    @commands.command(name="play")
+    @commands.command(name="play", aliases=["p"], help = "- Add a new song to the queue by a search or a link.")
     async def play(self, ctx, *args):
         await AudioFactory.joinChannel(ctx.bot, ctx.author)
 
@@ -73,28 +68,38 @@ class VoiceChannelCog(commands.Cog):
         else:
             await ctx.message.channel.send("Ik heb het verzoekje van %s toegevoegd, B-B-Billy radio!!" % (audioInfo.auther), embed=EmbeddedFactory.generateAudioInfoMessage(audioInfo))
 
-    @commands.command(name="skip")
+    @commands.command(name="skip", help = "- Skip a song from the queue.")
     async def skip(self, ctx):
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and voice_client.is_playing() and self.queue:
             voice_client.stop()
 
-    @commands.command(name="list")
+    @commands.command(name="remove", aliases=["rm"], help = "- Remove a song from the queue by it's id.")
+    async def remove(self, ctx, *args):
+        voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
+        if len(args) > 0 and args[0].isdigit() and voice_client and self.queue:
+            for i in range(0, len(self.queue)):
+                if self.queue[i].id == int(args[0]):
+                    await ctx.message.channel.send("", embed=EmbeddedFactory.generateAudioRemoveMessage(self.queue[i]))
+                    self.queue.pop(i)
+                    break;
+
+    @commands.command(name="list", help = "- List all the song's inside the queue.")
     async def list(self, ctx):
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and self.queue:
             await ctx.message.channel.send(embed=EmbeddedFactory.generateAudioQueueMessage(self.queue))
-        else if voice_client:
+        else:
             await ctx.message.channel.send(embed=EmbeddedFactory.generateAudioQueueEmptyMessage())
 
-    @commands.command(name="stop")
+    @commands.command(name="stop", help = "- Stop the current song from playing.")
     async def stop(self, ctx):
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and voice_client.is_playing():
             self.queue.clear()
             voice_client.stop()
 
-    @commands.command(name="pause")
+    @commands.command(name="pause", help = "- Pause the current song from playing.")
     async def pause(self, ctx):
         voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
         if voice_client and voice_client.is_playing():
