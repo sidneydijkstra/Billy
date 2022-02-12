@@ -7,10 +7,11 @@ from clients.billy import Billy
 def main():
     load_dotenv()
     TOKEN = os.getenv('DISCORD_TOKEN')
+    PREFIX = os.getenv('COMMAND_PREFIX')
     #GUILD = os.getenv('DISCORD_GUILD')
 
     bot = Billy(
-        command_prefix="$",
+        command_prefix=PREFIX,
         description='Robot Billy'
     )
 

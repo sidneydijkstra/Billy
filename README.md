@@ -22,6 +22,7 @@ Once you have installed all the dependencies you can create/edit the .env file w
 ```
 DISCORD_TOKEN=token  
 DISCORD_GUILD=Channel Name  
-FFMPEG_LOCATION=C:\folder\location\ffmpeg\bin\ffmpeg.exe  
+FFMPEG_LOCATION=C:\folder\location\ffmpeg\bin\ffmpeg.exe
+COMMAND_PREFIX=!
 ```
-The DISCORD_TOKEN is generated from the discord [dashboard](https://discord.com/developers) and needed for the bot to connect to the api of discord. DISCORD_GUILD is the name of the channel you want the bot to connect to (if you have multiple channels). And FFMPEG_LOCATION is the location of the ffmpeg.exe file, needed for the voice channel features to work.
+The DISCORD_TOKEN is generated from the discord [dashboard](https://discord.com/developers) and needed for the bot to connect to the api of discord. DISCORD_GUILD is the name of the channel you want the bot to connect to (if you have multiple channels). And FFMPEG_LOCATION is the location of the ffmpeg.exe file, needed for the voice channel features to work. And last the COMMAND_PREFIX used as character for calling commands.
