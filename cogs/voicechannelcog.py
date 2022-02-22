@@ -29,6 +29,16 @@ class VoiceChannelCog(commands.Cog):
     async def leave(self, ctx):
         await AudioFactory.leaveChannel(ctx.bot, ctx.author)
 
+    @commands.command(name="splay", help = "- Play a sound from source location")
+    async def splay(self, ctx, *args):
+        await AudioFactory.joinChannel(ctx.bot, ctx.author)
+
+        voice_client: discord.VoiceClient = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
+        if voice_client and not voice_client.is_playing():
+            if len(args) > 0:
+                source = "./audio/%s" % (args[0])
+                voice_client.play(AudioFactory.getVideoFromSource(source), after=lambda ex: ptint(ex) if ex else print("done splay! -> %s" % (source)))
+
     @commands.command(name="fplay", help = "- Play a random jingle.")
     async def fplay(self, ctx):
         await AudioFactory.joinChannel(ctx.bot, ctx.author)
