@@ -15,7 +15,7 @@ class Billy(commands.Bot):
 
 
         if self.user in message.mentions:
-            if message.auther == message.guild.owner:
+            if message.author == message.guild.owner:
                 await message.channel.send("Dag papa! Ik heb je gemist!")
                 return
 
