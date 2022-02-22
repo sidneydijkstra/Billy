@@ -12,7 +12,13 @@ class Billy(commands.Bot):
         if message.author == self.user:
             return
 
+
+
         if self.user in message.mentions:
+            if message.auther == message.guild.owner:
+                await message.channel.send("Dag papa! Ik heb je gemist!")
+                return
+
             embeddedBlock = EmbeddedFactory.generateMentionMessage()
             await message.channel.send("Hey Hoi, " + message.author.name + "! Ik zie dat je me een bericht stuurt, dus ik denk dat je me aandacht wil!", embed=embeddedBlock)
         else:
