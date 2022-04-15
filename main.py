@@ -1,24 +1,9 @@
 import os
 import discord
 from dotenv import load_dotenv
+load_dotenv()
 
-from clients.billy import Billy
-
-def main():
-    load_dotenv()
-    TOKEN = os.getenv('DISCORD_TOKEN')
-    PREFIX = os.getenv('COMMAND_PREFIX')
-    #GUILD = os.getenv('DISCORD_GUILD')
-
-    bot = Billy(
-        command_prefix=PREFIX,
-        description='Robot Billy'
-    )
-
-    bot.load_extension("cogs.voicechannelcog")
-    bot.load_extension("cogs.admincog")
-    bot.load_extension("cogs.minecraftcog")
-    bot.run(TOKEN, bot=True)
+from clients.billycontroller import BillyController
 
 if __name__ == '__main__':
-    main()
+    BillyController.setup()
