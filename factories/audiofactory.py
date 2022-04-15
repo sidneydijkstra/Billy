@@ -34,7 +34,7 @@ class AudioFactory:
     def getYdlInfoFromSearch(search):
         ydlInfo = ydl.extract_info(f"ytsearch:{search}", download=False)['entries'][0]
         return ydlInfo
-        
+
     def getAudioFromUrl(url):
         ffmpeg = discord.FFmpegPCMAudio(executable=ffmpeg_location, source=url, **ffmpeg_option)
         return ffmpeg

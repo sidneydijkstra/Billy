@@ -35,6 +35,10 @@ class EmbeddedFactory:
         for i in range(size):
             # get strategy
             strategy = queue[i]
+            # check if hidden then continue
+            if strategy.hidden:
+                continue
+            # end if
             # add embedded field
             embeddedBlock.add_field(name=strategy.getTitle(), value=strategy.getDescription(), inline=False)
         # end for

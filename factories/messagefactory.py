@@ -25,3 +25,6 @@ class MessageFactory:
 
     async def sendStrategyNoSkipMessage(channel):
         await channel.send("", embed=EmbeddedFactory.generateMessage("Er zijn momenteel geen verzoekjes meer!", "Je kan met !play een nieuw nummer in de wachtrij zetten. Probeer het nu!"))
+
+    async def sendStrategyNoSourceMessage(channel):
+        await channel.send("", embed=EmbeddedFactory.generateMessage("Sorry maar ik kan je locale nummer niet vinden!", "Heb je het goed geschreven, spelling kan namelijk een lastig vak zijn!"))

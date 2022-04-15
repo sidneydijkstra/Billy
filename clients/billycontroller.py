@@ -20,8 +20,6 @@ class BillyController:
         BillyController.bot.load_extension("cogs.debugcog")
         BillyController.bot.load_extension("cogs.radiocog")
         BillyController.bot.load_extension("cogs.admincog")
-        #bot.load_extension("cogs.voicechannelcog")
-        #bot.load_extension("cogs.minecraftcog")
         BillyController.bot.run(os.getenv('DISCORD_TOKEN'), bot = True)
 
     @staticmethod

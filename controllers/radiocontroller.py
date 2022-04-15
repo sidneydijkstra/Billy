@@ -1,6 +1,8 @@
+import random
 
 from factories.messagefactory import MessageFactory
 from factories.audiofactory import AudioFactory
+from factories.filefactory import FileFactory
 
 from clients.billycontroller import BillyController
 from strategy.radiostrategy import RadioStrategy
@@ -9,8 +11,9 @@ from strategy.sourcestrategy import SourceStrategy
 class RadioController: # TODO: jdl error handle
     def __init__(self):
         self.queue = []
+        self.JINGLE_PLAY_CHANGE = 0.8
 
-    async def playUrl(self, channel, author, url):
+    async def playUrl(self, author, url):
         # get ydl info
         ydlInfo = AudioFactory.getYdlInfoFromUrl(url)
         # get ffmpeg audio
@@ -21,18 +24,25 @@ class RadioController: # TODO: jdl error handle
         # do tryPlay
         await self._tryPlay(strategy)
 
-    async def playSource(self, channel, author, source):
+    async def playSource(self, author, source):
         # get audio path
-        sourcePath = "./audio/%s" % (source)
-        # get ffmpeg audio
-        ffmpegAudio = AudioFactory.getAudioFromSource(sourcePath)
+        sourcePath = FileFactory.getFilePath(source)
 
-        # create strategy
-        strategy = SourceStrategy(source, author, ffmpegAudio)
-        # do tryPlay
-        await self._tryPlay(strategy)
+        # check if file exists
+        if not sourcePath:
+            await MessageFactory.sendStrategyNoSourceMessage(BillyController.getChannel())
+        # end if
+        else:
+            # get ffmpeg audio
+            ffmpegAudio = AudioFactory.getAudioFromSource(sourcePath)
 
-    async def playSearch(self, channel, author, search):
+            # create strategy
+            strategy = SourceStrategy(source, author, ffmpegAudio)
+            # do tryPlay
+            await self._tryPlay(strategy)
+        # end else
+
+    async def playSearch(self, author, search):
         # get ydl info
         ydlInfo = AudioFactory.getYdlInfoFromSearch(search)
         # get ffmpeg audio
@@ -42,6 +52,20 @@ class RadioController: # TODO: jdl error handle
         strategy = RadioStrategy(ydlInfo, author, ffmpegAudio)
         # do tryPlay
         await self._tryPlay(strategy)
+
+    def playJingle(self):
+        # get random jingle path
+        jingle = FileFactory.getRandomJingle()
+
+        # check if file exists
+        if jingle == None:
+            return
+
+        # get ffmpeg audio
+        ffmpegAudio = AudioFactory.getAudioFromSource(jingle['path'])
+        # create strategy
+        strategy = SourceStrategy(jingle['name'], "Billy Radio", ffmpegAudio, True)
+        self.queue.append(strategy)
 
     async def remove(self, id):
         # get bot voice controller
@@ -93,6 +117,13 @@ class RadioController: # TODO: jdl error handle
         await MessageFactory.sendStrategyQueueMessage(BillyController.getChannel(), self.queue)
 
     async def _tryPlay(self, strategy):
+        # check if random lower than jingle change
+        if random.random() < self.JINGLE_PLAY_CHANGE:
+            # play jingle
+            self.playJingle()
+            print("added jingle")
+        # end if
+
         # add new strategy to queue
         self.queue.append(strategy)
 

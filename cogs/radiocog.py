@@ -20,11 +20,11 @@ class RadioCog(commands.Cog):
     @commands.command(name="play")
     async def play(self, ctx, *args):
         if len(args) > 0 and "https://" in args[0]:
-            await self.radio.playUrl(ctx.message.channel, ctx.author, args[0])
+            await self.radio.playUrl(ctx.author, args[0])
         elif len(args) > 1 and args[0] == "-s":
-            await self.radio.playSource(ctx.message.channel, ctx.author, args[1])
+            await self.radio.playSource(ctx.author, args[1])
         elif len(args) > 0 and args[0] != "-s":
-            await self.radio.playSearch(ctx.message.channel, ctx.author, ' '.join(args))
+            await self.radio.playSearch(ctx.author, ' '.join(args))
 
     @commands.command(name="stop")
     async def stop(self, ctx):

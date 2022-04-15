@@ -3,8 +3,8 @@ import asyncio
 from strategy.basestrategy import BaseStrategy
 
 class RadioStrategy(BaseStrategy):
-    def __init__(self, ydlInfo, author, ffmpegAudio):
-        super().__init__()
+    def __init__(self, ydlInfo, author, ffmpegAudio, hidden = False):
+        super().__init__(hidden)
         self.title = ydlInfo['title']
         self.uploader = ydlInfo['uploader']
         self.duration = self.getDuration(ydlInfo['duration'])
