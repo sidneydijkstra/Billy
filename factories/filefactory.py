@@ -3,24 +3,20 @@ import discord
 import random
 from gtts import gTTS
 from factories.uniqueidfactory import UniqueIdFactory
+from models.config import Config
 
 class FileFactory:
+    # load config with section files
+    config = Config.section('files')
+
     # setup files factory can load
-    publicFilesAccepted = [
-        "mp3",
-        "wav"
-    ]
-
+    publicFilesAccepted = config['publicFilesAccepted']
     # setup public folder factory can load
-    publicFoldersPath = [
-        "./audio/",
-        "./audio/radio/"
-    ]
-
+    publicFoldersPath = config['publicFoldersPath']
     # setup jingle folder path
-    publicJingleFolderPath = "./audio/radio/"
+    publicJingleFolderPath = config['publicJingleFolderPath']
     # setup temp folder path
-    publicTempFolderPath = "./audio/temp/"
+    publicTempFolderPath = config['publicTempFolderPath']
 
     # create temp folder if not exists
     if not os.path.exists(publicTempFolderPath):

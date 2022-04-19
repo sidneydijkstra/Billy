@@ -1,0 +1,19 @@
+{
+  "name": "Robot Billy",
+  "version": "1.1",
+  "textChannel": "billy",
+  "commandPrefix": "$",
+
+  "files": {
+    "publicFilesAccepted": [
+      "mp3",
+      "wav"
+    ],
+    "publicFoldersPath": [
+      "./audio/",
+      "./audio/radio/"
+    ],
+    "publicJingleFolderPath": "./audio/radio/",
+    "publicTempFolderPath": "./audio/temp/"
+  }
+}

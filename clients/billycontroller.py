@@ -1,10 +1,10 @@
 import os
 import discord
 
+from models.config import Config
 from clients.billy import Billy
 
-COMMAND_PREFIX = os.getenv('COMMAND_PREFIX')
-DISCORD_CHANNEL = os.getenv('DISCORD_CHANNEL')
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 
 class BillyController:
     bot = None
@@ -13,20 +13,20 @@ class BillyController:
     @staticmethod
     def setup():
         BillyController.bot = Billy(
-            command_prefix = COMMAND_PREFIX,
-            description = 'Robot Billy'
+            command_prefix = Config.get().object['commandPrefix'],
+            description = Config.get().object['name']
         )
         BillyController.bot.addInitCallback(BillyController.init)
         BillyController.bot.load_extension("cogs.debugcog")
         BillyController.bot.load_extension("cogs.radiocog")
         BillyController.bot.load_extension("cogs.admincog")
-        BillyController.bot.run(os.getenv('DISCORD_TOKEN'), bot = True)
+        BillyController.bot.run(DISCORD_TOKEN, bot = True)
 
     @staticmethod
     def init():
         for guild in BillyController.bot.guilds:
             for channel in guild.channels:
-                if str(channel.type) == 'text' and channel.name == DISCORD_CHANNEL:
+                if str(channel.type) == 'text' and channel.name == Config.get().object['textChannel']:
                     BillyController.currentMessageChannel = channel
                     print(channel)
 
