@@ -10,10 +10,10 @@
       "wav"
     ],
     "publicFoldersPath": [
-      "./audio/",
-      "./audio/radio/"
+      "./assets/jingles/",
+      "./assets/sounds/"
     ],
-    "publicJingleFolderPath": "./audio/radio/",
-    "publicTempFolderPath": "./audio/temp/"
+    "publicJingleFolderPath": "./assets/jingles/",
+    "publicTempFolderPath": "./assets/temp/"
   }
 }

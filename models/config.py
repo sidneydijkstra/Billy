@@ -1,7 +1,7 @@
 from models.jsonstorage import JsonStorage
 
 class Config:
-    config = JsonStorage("./config.json")
+    config = JsonStorage("./assets/config/config.json")
 
     def get():
         return Config.config
