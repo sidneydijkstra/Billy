@@ -1,4 +1,5 @@
 import discord
+import uuid
 
 class UniqueIdFactory:
     uniqueIntId = 0
@@ -7,3 +8,6 @@ class UniqueIdFactory:
         id = UniqueIdFactory.uniqueIntId
         UniqueIdFactory.uniqueIntId = UniqueIdFactory.uniqueIntId + 1
         return id
+
+    def getUuid():
+        return str(uuid.uuid4())

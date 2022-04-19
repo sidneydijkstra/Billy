@@ -67,6 +67,17 @@ class RadioController: # TODO: jdl error handle
         strategy = SourceStrategy(jingle['name'], "Billy Radio", ffmpegAudio, True)
         self.queue.append(strategy)
 
+    async def say(self, author, value):
+        tts = FileFactory.generateTTSFile(value)
+        print(tts)
+        # get ffmpeg audio
+        ffmpegAudio = AudioFactory.getAudioFromSource(tts['path'])
+
+        # create strategy
+        strategy = SourceStrategy(tts['name'], "Billy Radio", ffmpegAudio)
+        # do tryPlay
+        await self._tryPlay(strategy, True)
+
     async def remove(self, id):
         # get bot voice controller
         voiceClient = BillyController.getVoice()
@@ -116,9 +127,9 @@ class RadioController: # TODO: jdl error handle
         # send queue message
         await MessageFactory.sendStrategyQueueMessage(BillyController.getChannel(), self.queue)
 
-    async def _tryPlay(self, strategy):
+    async def _tryPlay(self, strategy, skipJingle = False):
         # check if random lower than jingle change
-        if random.random() < self.JINGLE_PLAY_CHANGE:
+        if not skipJingle and random.random() < self.JINGLE_PLAY_CHANGE:
             # play jingle
             self.playJingle()
             print("added jingle")
@@ -162,6 +173,9 @@ class RadioController: # TODO: jdl error handle
             # play strategy and set _callbackPlay() as callback function
             strategy.execute(BillyController.getBot(), voiceClient, self._callbackPlay)
         # end if
+
+        # clear temp folder
+        FileFactory.clearTempFolder()
 
         # debug print
         print("_callbackPlay()")

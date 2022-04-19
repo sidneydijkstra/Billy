@@ -26,6 +26,11 @@ class RadioCog(commands.Cog):
         elif len(args) > 0 and args[0] != "-s":
             await self.radio.playSearch(ctx.author, ' '.join(args))
 
+    @commands.command(name="say")
+    async def say(self, ctx, *args):
+        if len(args) > 0:
+            await self.radio.say(ctx.author, ' '.join(args))
+
     @commands.command(name="stop")
     async def stop(self, ctx):
         await self.radio.stop()
