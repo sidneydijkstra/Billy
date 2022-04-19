@@ -1,0 +1,49 @@
+{
+  "errorMessage": "Oops?!? Er gaat iets mis met het commando van %s!",
+
+  "mention": {
+    "title": "Verveling?",
+    "description": "Als je niet weet wat je wil doen heb ik misschien wat voor je!",
+    "fields": [
+      {
+        "title": "Rustig Gamen",
+        "description": "Hier heb ik een website waar je leuke games op kan spelen, veel plezier!\n<https://spele.nl/>"
+      },
+      {
+        "title": "Degelijk Wanken",
+        "description": "Echt even snel een paar minuten voor jezelf, geniet ervan!\n<https://pornhub.com>"
+      },
+      {
+        "title": "Nieuwe Vlam",
+        "description": "Opzoek naar een nieuwe liefde is altijd spannend, probeer het hier!\n<https://vijftigplusdating.nl>"
+      }
+    ]
+  },
+
+  "strategyAddMessage": "Ik heb het verzoekje van %s toegevoegd, B-B-Billy radio!!",
+  "strategyRemoveMessage": {
+    "title": "%s is verwijderd",
+    "description": "%s heeft dit nummer uit de wachtrij gehaald! Klaag hem aan!"
+  },
+  "strategyPlayMessage": "B-B-B-Billy Radio met een verzoekje van %s!",
+  "strategyStopMessage": {
+    "title": "Ik heb de radio stop gezet!",
+    "description": "Je kan met !play een nieuw nummer in de wachtrij zetten."
+  },
+  "strategyNoQueueMessage": {
+    "title": "Billy FM heeft niks af te spelen!",
+    "description": "Doe !play om een nummer aan te vragen!"
+  },
+  "strategyQueueMessage": {
+    "title": "Nu op Billy FM!",
+    "description": "Weet direct wat er te luisteren valt!"
+  },
+  "strategyNoSkipMessage": {
+    "title": "Er zijn momenteel geen verzoekjes meer!",
+    "description": "Je kan met !play een nieuw nummer in de wachtrij zetten. Probeer het nu!"
+  },
+  "strategyNoSourceMessage": {
+    "title": "Sorry maar ik kan je locale nummer niet vinden!",
+    "description": "Heb je het goed geschreven, spelling kan namelijk een lastig vak zijn!"
+  }
+}

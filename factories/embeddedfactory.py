@@ -1,13 +1,15 @@
 import discord
 embedColor = 0xff0000
 
+from models.config import Config
+messages = Config.messages.object
+
 class EmbeddedFactory:
     # generate mention message
     def generateMentionMessage():
-        embeddedBlock = discord.Embed(title="Verveling?", description="Als je niet weet wat je wil doen heb ik misschien wat voor je!", color=0x00ff00)
-        embeddedBlock.add_field(name="Rustig Gamen", value="Hier heb ik een website waar je leuke games op kan spelen, veel plezier!\n<https://spele.nl/>", inline=False)
-        embeddedBlock.add_field(name="Degelijk Wanken", value="Echt even snel een paar minuten voor jezelf, geniet ervan!\n<https://pornhub.com>", inline=False)
-        embeddedBlock.add_field(name="Nieuwe Vlam", value="Opzoek naar een nieuwe liefde is altijd spannend, probeer het hier!\n<https://vijftigplusdating.nl>", inline=False)
+        embeddedBlock = discord.Embed(title=messages['mention']['title'], description=messages['mention']['description'], color=0x00ff00)
+        for field in messages['mention']['fields']:
+            embeddedBlock.add_field(name=field['title'], value=field['description'], inline=False)
         return embeddedBlock
 
     # generate embedded message
@@ -24,11 +26,11 @@ class EmbeddedFactory:
     def generateStrategyQueueMessage(queue):
         # check if queue is empty
         if len(queue) <= 0:
-            return discord.Embed(title="Billy FM heeft niks af te spelen!", description="Doe !play om een nummer aan te vragen!", color=embedColor)
+            return discord.Embed(title=messages['strategyNoQueueMessage']['title'], description=messages['strategyNoQueueMessage']['description'], color=embedColor)
         # end if
 
         # generate embedded block
-        embeddedBlock = discord.Embed(title="Nu op Billy FM!", description="Weet direct wat er te luisteren valt!", color=embedColor)
+        embeddedBlock = discord.Embed(title=messages['strategyQueueMessage']['title'], description=messages['strategyQueueMessage']['description'], color=embedColor)
         # get size of queue
         size = len(queue) if len(queue) <= 5 else 5
         # loop max 5 entries in queue
