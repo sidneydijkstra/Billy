@@ -1,14 +1,14 @@
 import discord
 embedColor = 0xff0000
 
-from models.config import Config
-messages = Config.messages.object
+from managers.configmanager import ConfigManager
+messagesConfig = ConfigManager.get('messages')
 
 class EmbeddedFactory:
     # generate mention message
     def generateMentionMessage():
-        embeddedBlock = discord.Embed(title=messages['mention']['title'], description=messages['mention']['description'], color=0x00ff00)
-        for field in messages['mention']['fields']:
+        embeddedBlock = discord.Embed(title=messagesConfig['mention']['title'], description=messagesConfig['mention']['description'], color=0x00ff00)
+        for field in messagesConfig['mention']['fields']:
             embeddedBlock.add_field(name=field['title'], value=field['description'], inline=False)
         return embeddedBlock
 
@@ -26,11 +26,11 @@ class EmbeddedFactory:
     def generateStrategyQueueMessage(queue):
         # check if queue is empty
         if len(queue) <= 0:
-            return discord.Embed(title=messages['strategyNoQueueMessage']['title'], description=messages['strategyNoQueueMessage']['description'], color=embedColor)
+            return discord.Embed(title=messagesConfig['strategyNoQueueMessage']['title'], description=messagesConfig['strategyNoQueueMessage']['description'], color=embedColor)
         # end if
 
         # generate embedded block
-        embeddedBlock = discord.Embed(title=messages['strategyQueueMessage']['title'], description=messages['strategyQueueMessage']['description'], color=embedColor)
+        embeddedBlock = discord.Embed(title=messagesConfig['strategyQueueMessage']['title'], description=messagesConfig['strategyQueueMessage']['description'], color=embedColor)
         # get size of queue
         size = len(queue) if len(queue) <= 5 else 5
         # loop max 5 entries in queue

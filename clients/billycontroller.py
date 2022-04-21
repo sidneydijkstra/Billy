@@ -1,8 +1,9 @@
 import os
 import discord
 
-from models.config import Config
 from clients.billy import Billy
+from managers.configmanager import ConfigManager
+systemConfig = ConfigManager.get('system')
 
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 
@@ -13,20 +14,21 @@ class BillyController:
     @staticmethod
     def setup():
         BillyController.bot = Billy(
-            command_prefix = Config.get().object['commandPrefix'],
-            description = Config.get().object['name']
+            command_prefix = systemConfig['commandPrefix'],
+            description = systemConfig['name']
         )
         BillyController.bot.addInitCallback(BillyController.init)
         BillyController.bot.load_extension("cogs.debugcog")
         BillyController.bot.load_extension("cogs.radiocog")
         BillyController.bot.load_extension("cogs.admincog")
+        BillyController.bot.load_extension("cogs.configcog")
         BillyController.bot.run(DISCORD_TOKEN, bot = True)
 
     @staticmethod
     def init():
         for guild in BillyController.bot.guilds:
             for channel in guild.channels:
-                if str(channel.type) == 'text' and channel.name == Config.get().object['textChannel']:
+                if str(channel.type) == 'text' and channel.name == systemConfig['textChannel']:
                     BillyController.currentMessageChannel = channel
                     print(channel)
 

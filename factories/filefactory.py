@@ -3,20 +3,20 @@ import discord
 import random
 from gtts import gTTS
 from factories.uniqueidfactory import UniqueIdFactory
-from models.config import Config
+from managers.configmanager import ConfigManager
+FilesConfig = ConfigManager.get('files')
 
 class FileFactory:
     # load config with section files
-    config = Config.section('files')
 
     # setup files factory can load
-    publicFilesAccepted = config['publicFilesAccepted']
+    publicFilesAccepted = FilesConfig['publicFilesAccepted']
     # setup public folder factory can load
-    publicFoldersPath = config['publicFoldersPath']
+    publicFoldersPath = FilesConfig['publicFoldersPath']
     # setup jingle folder path
-    publicJingleFolderPath = config['publicJingleFolderPath']
+    publicJingleFolderPath = FilesConfig['publicJingleFolderPath']
     # setup temp folder path
-    publicTempFolderPath = config['publicTempFolderPath']
+    publicTempFolderPath = FilesConfig['publicTempFolderPath']
 
     # create temp folder if not exists
     if not os.path.exists(publicTempFolderPath):

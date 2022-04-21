@@ -39,7 +39,6 @@
       ]
     },
 
-    "configError": "Er zit een fout in je commando met section %s!",
     "configEdit": "Ik heb config section %s aangepast!",
     "configShow": "Hierbij config section %s!",
     "configList": "Hier alle keys van config!",
