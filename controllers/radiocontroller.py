@@ -20,7 +20,7 @@ class RadioController: # TODO: jdl error handle
         ffmpegAudio = AudioFactory.getAudioFromYdlInfo(ydlInfo)
 
         # create strategy
-        strategy = RadioStrategy(ydlInfo, author, ffmpegAudio)
+        strategy = RadioStrategy(ydlInfo, author, ffmpegAudio, False, url)
         # do tryPlay
         await self._tryPlay(strategy)
 

@@ -1,9 +1,10 @@
 import asyncio
 
 from strategy.basestrategy import BaseStrategy
+from managers.csvmanager import CSVManager
 
 class RadioStrategy(BaseStrategy):
-    def __init__(self, ydlInfo, author, ffmpegAudio, hidden = False):
+    def __init__(self, ydlInfo, author, ffmpegAudio, hidden = False, url = None):
         super().__init__(hidden)
         self.title = ydlInfo['title']
         self.uploader = ydlInfo['uploader']
@@ -12,6 +13,11 @@ class RadioStrategy(BaseStrategy):
         self.url = ydlInfo['formats'][0]['url']
         self.author = author
         self.ffmpegAudio = ffmpegAudio
+
+        # add entrie in song history
+        CSVManager.addSongHistory(ydlInfo['id'], ydlInfo['title'], "https://www.youtube.com/watch?v={0}".format(ydlInfo['id']) if not url else url)
+
+
 
     def execute(self, bot, voiceClient, callback):
         voiceClient.play(self.ffmpegAudio, after=lambda ex: asyncio.run_coroutine_threadsafe(callback(), bot.loop))

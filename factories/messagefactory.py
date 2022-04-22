@@ -22,6 +22,20 @@ class MessageFactory:
     async def sendConfigList(channel, value):
         await channel.send(messagesConfig['configList'] + ("\n```\n%s\n```" % (value)))
 
+    # <-- stats messages -->
+    async def sendStatsError(channel, error):
+        await channel.send(messagesConfig['statsError'] + ("\n```\n%s\n```" % (error)))
+
+    async def sendStatsList(channel, value):
+        await channel.send(messagesConfig['statsList'] + ("\n```\n%s\n```" % (value)))
+
+    async def sendStatsShow(channel, name, table):
+        tableContent = ""
+        for row in table:
+            print(row)
+            tableContent += ', '.join(row) + "\n"
+        await channel.send(messagesConfig['statsShow'] % (name) + ("\n```\n%s\n```" % (tableContent)))
+
     # <-- strategy messages -->
     async def sendStrategyAddMessage(channel, strategy):
         await channel.send(messagesConfig['strategyAddMessage'] % (strategy.author), embed=EmbeddedFactory.generateStrategyMessage(strategy))

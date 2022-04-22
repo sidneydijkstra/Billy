@@ -18,11 +18,11 @@ class Billy(commands.Bot):
         for callback in self.initCallbacks:
             callback()
 
-    #async def on_command_error(self, context, exception):
-    #    print("- ERROR -")
-    #    print(str(context.message.content))
-    #    print(exception)
-    #    await MessageFactory.sendErrorMessage(context, context.message.content, exception)
+    async def on_command_error(self, context, exception):
+        print("- ERROR -")
+        print(str(context.message.content))
+        print(exception)
+        await MessageFactory.sendErrorMessage(context, context.message.content, exception)
 
     async def on_message(self, message): # on tag
         if message.author == self.user:

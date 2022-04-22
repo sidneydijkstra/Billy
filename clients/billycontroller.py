@@ -22,6 +22,7 @@ class BillyController:
         BillyController.bot.load_extension("cogs.radiocog")
         BillyController.bot.load_extension("cogs.admincog")
         BillyController.bot.load_extension("cogs.configcog")
+        BillyController.bot.load_extension("cogs.statscog")
         BillyController.bot.run(DISCORD_TOKEN, bot = True)
 
     @staticmethod

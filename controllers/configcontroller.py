@@ -3,18 +3,23 @@ import random
 from factories.messagefactory import MessageFactory
 from clients.billycontroller import BillyController
 from managers.configmanager import ConfigManager
+from managers.csvmanager import CSVManager
 
-class ConfigController: # TODO: jdl error handle
+class ConfigController:
     def __init__(self):
         pass
 
     async def edit(self, author, path, content):
+        # try to get config section from path
+        _, _, oldValue = self.getConfigSection(path)
         # try to set path section to content
         state, name, value = self.setConfigSection(path, content)
         # check if state is true
         if state:
             # save changes to config
             ConfigManager.save()
+            # make history entrie
+            CSVManager.addConfigHistory(author.id, author.name, '/'.join(path), name, oldValue, value)
             # send edit message
             await MessageFactory.sendConfigEdit(BillyController.getChannel(), path, self.stringConfig(name, value))
         # end if
