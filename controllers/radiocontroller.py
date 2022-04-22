@@ -128,10 +128,13 @@ class RadioController: # TODO: jdl error handle
         await MessageFactory.sendStrategyQueueMessage(BillyController.getChannel(), self.queue)
 
     async def _tryPlay(self, strategy, skipJingle = False):
+        # create added jingle variable
+        addedJingle = False
         # check if random lower than jingle change
         if not skipJingle and random.random() < self.JINGLE_PLAY_CHANGE:
             # play jingle
             self.playJingle()
+            addedjingle = True
             print("added jingle")
         # end if
 
@@ -140,10 +143,20 @@ class RadioController: # TODO: jdl error handle
 
         # get bot voice controller
         voiceClient = BillyController.getVoice()
+        if not voiceClient:
+            channel = strategy.author.voice.channel
+            if channel:
+                await BillyController.joinChannel(channel)
+                voiceClient = BillyController.getVoice()
+            else:
+                return # TODO: ERROR
+
         # check if voiceClient is active and not playing
         if voiceClient and not voiceClient.is_playing():
-            # send play message
-            await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
+            # check if not added jingle
+            if not addedjingle:
+                # send play message
+                await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
 
             # get strategy
             strategy = self.queue.pop(0)

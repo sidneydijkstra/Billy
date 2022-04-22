@@ -1,6 +1,6 @@
 # project folders
-./assets/temp
-./assets/csv
+assets/temp
+assets/csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
