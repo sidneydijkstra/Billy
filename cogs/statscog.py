@@ -59,12 +59,18 @@ class StatsCog(commands.Cog):
                 table = csvTable.table.all()
             # end else
         # end elif
+        # send top songs if no argument
+        else:
+            topSongsLenght = 10
+            csvTable = CSVManager.get("songHistory").table
+            songsTable = csvTable.sortHigh("requests", topSongsLenght)
+            await MessageFactory.sendStatsTopSongs(BillyController.getChannel(), songsTable, topSongsLenght)
 
         # if table variable not None
         if not table == None:
             # insert header into start of array
             table = copy.copy(table)
-            table.insert(0, csvTable.table.headers())
+            table.insert(0, csvTable.headers())
             # send stats show message
             await MessageFactory.sendStatsShow(BillyController.getChannel(), args[0], table)
         # end if

@@ -47,6 +47,7 @@
     "statsError": "Sorry maar er gaat iets fout met je command!",
     "statsList": "Hier alle mogelijke stats om te bekijken!",
     "statsShow": "Hier de stats van %s!",
+    "statsTopSongs": "Dit zijn de top %s nummers van Billy Radio!",
 
     "strategyAddMessage": "Ik heb het verzoekje van %s toegevoegd, B-B-Billy radio!!",
     "strategyRemoveMessage": {

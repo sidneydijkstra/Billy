@@ -32,9 +32,16 @@ class MessageFactory:
     async def sendStatsShow(channel, name, table):
         tableContent = ""
         for row in table:
-            print(row)
             tableContent += ', '.join(row) + "\n"
         await channel.send(messagesConfig['statsShow'] % (name) + ("\n```\n%s\n```" % (tableContent)))
+
+    async def sendStatsTopSongs(channel, table, size):
+        print(table)
+        tableContent = ""
+        for row in table:
+            tableContent += ', '.join([row[1], row[3]]) + "\n"
+        await channel.send(messagesConfig['statsTopSongs'] % (str(size)) + ("\n```\n%s\n```" % (tableContent)))
+
 
     # <-- strategy messages -->
     async def sendStrategyAddMessage(channel, strategy):

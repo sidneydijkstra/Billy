@@ -9,6 +9,13 @@ class CSVTable():
     def headers(self):
         return self.columnHeaders
 
+    def headerIndex(self, header):
+        for i in range(0, len(self.columnHeaders)):
+            if self.columnHeaders[i] == header:
+                return i
+
+        return -1
+
     # row util
     def add(self, row):
         self.rows.append(row)
@@ -36,6 +43,10 @@ class CSVTable():
         for row in self.rows:
             if row[index] == value:
                 return row
+
+    from operator import itemgetter
+    def sortHigh(self, header, max):
+        return sorted(self.rows, key=lambda x: (int(x[self.headerIndex(header)])), reverse=True)[:max]
 
     def update(self, header, value, content):
         index = -1
