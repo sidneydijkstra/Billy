@@ -70,7 +70,7 @@ class StatsCog(commands.Cog):
         if not table == None:
             # insert header into start of array
             table = copy.copy(table)
-            table.insert(0, csvTable.headers())
+            table.insert(0, csvTable.table.headers())
             # send stats show message
             await MessageFactory.sendStatsShow(BillyController.getChannel(), args[0], table)
         # end if

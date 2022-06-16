@@ -3,6 +3,7 @@ import random
 from factories.messagefactory import MessageFactory
 from factories.audiofactory import AudioFactory
 from factories.filefactory import FileFactory
+from managers.csvmanager import CSVManager
 
 from clients.billycontroller import BillyController
 from strategy.radiostrategy import RadioStrategy
@@ -63,6 +64,7 @@ class RadioController: # TODO: jdl error handle
 
         # get ffmpeg audio
         ffmpegAudio = AudioFactory.getAudioFromSource(jingle['path'])
+
         # create strategy
         strategy = SourceStrategy(jingle['name'], "Billy Radio", ffmpegAudio, True)
         self.queue.append(strategy)
@@ -74,7 +76,7 @@ class RadioController: # TODO: jdl error handle
         ffmpegAudio = AudioFactory.getAudioFromSource(tts['path'])
 
         # create strategy
-        strategy = SourceStrategy(tts['name'], "Billy Radio", ffmpegAudio)
+        strategy = SourceStrategy(tts['name'], author, ffmpegAudio)
         # do tryPlay
         await self._tryPlay(strategy, True)
 
@@ -123,18 +125,36 @@ class RadioController: # TODO: jdl error handle
             await MessageFactory.sendStrategyNoSkipMessage(BillyController.getChannel())
         # end elif
 
+    async def playTop(self, author, max):
+        csvTable = CSVManager.get("songHistory").table
+        songsTable = csvTable.sortHigh("requests", max)
+
+        for row in songsTable:
+            # get url
+            url = str(row[2])
+            # get ydl info
+            ydlInfo = AudioFactory.getYdlInfoFromUrl(url)
+            # get ffmpeg audio
+            ffmpegAudio = AudioFactory.getAudioFromYdlInfo(ydlInfo)
+
+            # create strategy
+            strategy = RadioStrategy(ydlInfo, author, ffmpegAudio, False, url)
+            # do tryPlay
+            await self._tryPlay(strategy, skipAddedMessage=True)
+            
+
     async def list(self):
         # send queue message
         await MessageFactory.sendStrategyQueueMessage(BillyController.getChannel(), self.queue)
 
-    async def _tryPlay(self, strategy, skipJingle = False):
+    async def _tryPlay(self, strategy, skipJingle = False, skipAddedMessage = False, skipPlayMessage = False):
         # create added jingle variable
         addedJingle = False
         # check if random lower than jingle change
         if not skipJingle and random.random() < self.JINGLE_PLAY_CHANGE:
             # play jingle
             self.playJingle()
-            addedjingle = True
+            addedJingle = True
             print("added jingle")
         # end if
 
@@ -154,7 +174,7 @@ class RadioController: # TODO: jdl error handle
         # check if voiceClient is active and not playing
         if voiceClient and not voiceClient.is_playing():
             # check if not added jingle
-            if not addedjingle:
+            if not addedJingle or not skipAddedMessage:
                 # send play message
                 await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
 
@@ -165,7 +185,7 @@ class RadioController: # TODO: jdl error handle
         # end if
 
         # check if voiceClient is active and playing
-        elif voiceClient and voiceClient.is_playing():
+        elif voiceClient and voiceClient.is_playing() and not skipAddedMessage:
             # send add message
             await MessageFactory.sendStrategyAddMessage(BillyController.getChannel(), strategy)
         # end elif

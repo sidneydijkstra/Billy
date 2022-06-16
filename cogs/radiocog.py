@@ -19,10 +19,13 @@ class RadioCog(commands.Cog):
 
     @commands.command(name="play")
     async def play(self, ctx, *args):
+        print(args)
         if len(args) > 0 and "https://" in args[0]:
             await self.radio.playUrl(ctx.author, args[0])
         elif len(args) > 1 and args[0] == "-s":
             await self.radio.playSource(ctx.author, args[1])
+        elif len(args) > 0 and args[0] == "-top":
+            await self.radio.playTop(ctx.author, 10 if len(args) == 1 else int(args[1]))
         elif len(args) > 0 and args[0] != "-s":
             await self.radio.playSearch(ctx.author, ' '.join(args))
 

@@ -43,7 +43,7 @@ class FileFactory:
             jingleFiles.append({
                 "name": fileSplit[0],
                 "type": fileSplit[1],
-                "path": folder + file
+                "path": publicJingleFolderPath + file
             })
     # shuffle jingle array
     jingles = random.sample(jingleFiles, len(jingleFiles))

@@ -13,7 +13,7 @@ class SourceStrategy(BaseStrategy):
         voiceClient.play(self.ffmpegAudio, after=lambda ex: asyncio.run_coroutine_threadsafe(callback(), bot.loop))
 
     def getTitle(self):
-        return "%s [00:00]" % (self.title)
+        return "%s [ER:OR]" % (self.title)
 
     def getDescription(self):
         return "Een local nummertje op Billy Radio!"
