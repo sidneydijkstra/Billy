@@ -141,7 +141,6 @@ class RadioController: # TODO: jdl error handle
             strategy = RadioStrategy(ydlInfo, author, ffmpegAudio, False, url)
             # do tryPlay
             await self._tryPlay(strategy, skipAddedMessage=True)
-            
 
     async def list(self):
         # send queue message

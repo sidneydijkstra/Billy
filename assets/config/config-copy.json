@@ -2,7 +2,7 @@
   "system": {
     "name": "Robot Billy",
     "version": "1.0",
-    "textChannel": "billy",
+    "textChannel": "billy-test",
     "commandPrefix": "$"
   },
   "files": {

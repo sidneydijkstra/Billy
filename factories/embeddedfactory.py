@@ -25,14 +25,16 @@ class EmbeddedFactory:
     # generate strategy queue message
     def generateStrategyQueueMessage(queue):
         # check if queue is empty
+        pageSize = 5
         if len(queue) <= 0:
             return discord.Embed(title=messagesConfig['strategyNoQueueMessage']['title'], description=messagesConfig['strategyNoQueueMessage']['description'], color=embedColor)
         # end if
 
         # generate embedded block
         embeddedBlock = discord.Embed(title=messagesConfig['strategyQueueMessage']['title'], description=messagesConfig['strategyQueueMessage']['description'], color=embedColor)
+        
         # get size of queue
-        size = len(queue) if len(queue) <= 5 else 5
+        size = len(queue) if len(queue) <= 5 else pageSize
         # loop max 5 entries in queue
         for i in range(size):
             # get strategy

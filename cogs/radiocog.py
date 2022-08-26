@@ -20,13 +20,13 @@ class RadioCog(commands.Cog):
     @commands.command(name="play")
     async def play(self, ctx, *args):
         print(args)
-        if len(args) > 0 and "https://" in args[0]:
+        if len(args) > 0 and "https://" in args[0]: # url
             await self.radio.playUrl(ctx.author, args[0])
-        elif len(args) > 1 and args[0] == "-s":
+        elif len(args) > 1 and args[0] == "-s": # soundcloud
             await self.radio.playSource(ctx.author, args[1])
-        elif len(args) > 0 and args[0] == "-top":
+        elif len(args) > 0 and args[0] == "-top": # top songs
             await self.radio.playTop(ctx.author, 10 if len(args) == 1 else int(args[1]))
-        elif len(args) > 0 and args[0] != "-s":
+        elif len(args) > 0 and args[0] != "-s": # search
             await self.radio.playSearch(ctx.author, ' '.join(args))
 
     @commands.command(name="say")
