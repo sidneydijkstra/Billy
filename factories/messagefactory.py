@@ -58,8 +58,8 @@ class MessageFactory:
     async def sendStrategyStopMessage(channel):
         await channel.send("", embed=EmbeddedFactory.generateMessage(messagesConfig['strategyStopMessage']['title'], messagesConfig['strategyStopMessage']['description']))
 
-    async def sendStrategyQueueMessage(channel, queue):
-        await channel.send("", embed=EmbeddedFactory.generateStrategyQueueMessage(queue))
+    async def sendStrategyQueueMessage(channel, queue, page):
+        await channel.send("", embed=EmbeddedFactory.generateStrategyQueueMessage(queue, page))
 
     async def sendStrategyNoSkipMessage(channel):
         await channel.send("", embed=EmbeddedFactory.generateMessage(messagesConfig['strategyNoSkipMessage']['title'], messagesConfig['strategyNoSkipMessage']['description']))

@@ -12,6 +12,11 @@ class DebugCog(commands.Cog):
     @commands.is_owner()
     async def get(self, ctx):
         print(BillyController.getChannel())
+        
+    @commands.command(name="throw")
+    @commands.is_owner()
+    async def throw(self, ctx):
+        raise Exception("Prank gaat fout!! ( btw, je zit in banaanensplit )") 
 
 
 def setup(bot):

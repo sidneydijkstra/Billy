@@ -9,6 +9,7 @@ class RadioCog(commands.Cog):
     def __init__(self, bot):
         self.radio = RadioController()
 
+    #@commands.command(name="shutdown", aliases=["q", "quit"], help = "- Shutdown the bot.") 
     @commands.command(name="join")
     async def join(self, ctx):
         await BillyController.joinUser(ctx.author)
@@ -33,6 +34,10 @@ class RadioCog(commands.Cog):
     async def say(self, ctx, *args):
         if len(args) > 0:
             await self.radio.say(ctx.author, ' '.join(args))
+            
+    @commands.command(name="pause")
+    async def pause(self, ctx):
+        await self.radio.pause()
 
     @commands.command(name="stop")
     async def stop(self, ctx):
@@ -44,16 +49,15 @@ class RadioCog(commands.Cog):
             await self.radio.remove(int(args[0]))
 
     @commands.command(name="list")
-    async def list(self, ctx):
-        await self.radio.list()
+    async def list(self, ctx, *args):
+        if len(args) > 0 and isinstance(int(args[0]), int):
+            await self.radio.list(int(args[0]))
+        else:
+            await self.radio.list()
 
     @commands.command(name="skip")
     async def skip(self, ctx):
         await self.radio.skip()
-
-    @commands.command(name="_p")
-    async def _p(self, ctx):
-        pass
 
 
 def setup(bot):

@@ -79,6 +79,13 @@ class RadioController: # TODO: jdl error handle
         strategy = SourceStrategy(tts['name'], author, ffmpegAudio)
         # do tryPlay
         await self._tryPlay(strategy, True)
+        
+    async def pause(self):
+        voiceClient = BillyController.getVoice()
+        if voiceClient and voiceClient.is_playing():
+            voiceClient.pause()
+        elif voiceClient and voiceClient.is_paused():
+            voiceClient.resume()
 
     async def remove(self, id):
         # get bot voice controller
@@ -142,9 +149,9 @@ class RadioController: # TODO: jdl error handle
             # do tryPlay
             await self._tryPlay(strategy, skipAddedMessage=True)
 
-    async def list(self):
+    async def list(self, page = 0):
         # send queue message
-        await MessageFactory.sendStrategyQueueMessage(BillyController.getChannel(), self.queue)
+        await MessageFactory.sendStrategyQueueMessage(BillyController.getChannel(), self.queue, page)
 
     async def _tryPlay(self, strategy, skipJingle = False, skipAddedMessage = False, skipPlayMessage = False):
         # create added jingle variable

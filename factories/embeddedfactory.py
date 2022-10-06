@@ -23,25 +23,34 @@ class EmbeddedFactory:
         return embeddedBlock
 
     # generate strategy queue message
-    def generateStrategyQueueMessage(queue):
-        # check if queue is empty
+    def generateStrategyQueueMessage(queue, page):
+        
+        print("real size: ", len(queue))
+        
         pageSize = 5
-        if len(queue) <= 0:
+        # remove all hidden strategies from queue
+        queue = [strategy for strategy in queue if not strategy.hidden]
+        popSize = page * pageSize
+        
+        print("filterd size: ", len(queue))
+        
+        if len(queue) <= 0 or len(queue) <= popSize:
             return discord.Embed(title=messagesConfig['strategyNoQueueMessage']['title'], description=messagesConfig['strategyNoQueueMessage']['description'], color=embedColor)
         # end if
-
+        
+        queue = queue[popSize:]
+        
         # generate embedded block
         embeddedBlock = discord.Embed(title=messagesConfig['strategyQueueMessage']['title'], description=messagesConfig['strategyQueueMessage']['description'], color=embedColor)
         
         # get size of queue
         size = len(queue) if len(queue) <= 5 else pageSize
+        print("print size: ", size)
         # loop max 5 entries in queue
         for i in range(size):
             # get strategy
             strategy = queue[i]
-            # check if hidden then continue
-            if strategy.hidden:
-                continue
+            
             # end if
             # add embedded field
             embeddedBlock.add_field(name=strategy.getTitle(), value=strategy.getDescription(), inline=False)

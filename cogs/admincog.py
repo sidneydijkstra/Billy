@@ -6,7 +6,7 @@ class AdminCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="shutdown", aliases=["q", "quit", "sd"], help = "- Shutdown the bot.")
+    @commands.command(name="shutdown", aliases=["q", "quit"], help = "- Shutdown the bot.")
     @commands.is_owner()
     async def shutdown(self, ctx):
         voice = ctx.voice_client
