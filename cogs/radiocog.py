@@ -20,7 +20,6 @@ class RadioCog(commands.Cog):
 
     @commands.command(name="play")
     async def play(self, ctx, *args):
-        print(args)
         if len(args) > 0 and "https://" in args[0]: # url
             await self.radio.playUrl(ctx.author, args[0])
         elif len(args) > 1 and args[0] == "-s": # soundcloud
@@ -29,6 +28,11 @@ class RadioCog(commands.Cog):
             await self.radio.playTop(ctx.author, 10 if len(args) == 1 else int(args[1]))
         elif len(args) > 0 and args[0] != "-s": # search
             await self.radio.playSearch(ctx.author, ' '.join(args))
+
+        # delete message. 
+        # if message is youtube url discord shows 
+        # embedded message with video, we dont want this!
+        await ctx.message.delete()
 
     @commands.command(name="say")
     async def say(self, ctx, *args):

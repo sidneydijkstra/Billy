@@ -5,7 +5,7 @@
     "textChannel": "billy-test",
     "commandPrefix": "$"
   },
-  "radio": {
+  "options": {
     "jinglePlayChange": 0.5
   },
   "files": {

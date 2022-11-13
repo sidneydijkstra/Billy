@@ -1,7 +1,7 @@
 import random
 
 from managers.configmanager import ConfigManager
-radioConfig = ConfigManager.get('radio')
+optionsConfig = ConfigManager.get('options')
 
 from factories.messagefactory import MessageFactory
 from factories.audiofactory import AudioFactory
@@ -15,7 +15,7 @@ from strategy.sourcestrategy import SourceStrategy
 class RadioController: # TODO: jdl error handle
     def __init__(self):
         self.queue = []
-        self.JINGLE_PLAY_CHANGE = radioConfig['jinglePlayChange']
+        self.JINGLE_PLAY_CHANGE = optionsConfig['jinglePlayChange']
 
     async def playUrl(self, author, url):
         # get ydl info
