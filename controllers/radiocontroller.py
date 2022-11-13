@@ -1,5 +1,8 @@
 import random
 
+from managers.configmanager import ConfigManager
+radioConfig = ConfigManager.get('radio')
+
 from factories.messagefactory import MessageFactory
 from factories.audiofactory import AudioFactory
 from factories.filefactory import FileFactory
@@ -12,7 +15,7 @@ from strategy.sourcestrategy import SourceStrategy
 class RadioController: # TODO: jdl error handle
     def __init__(self):
         self.queue = []
-        self.JINGLE_PLAY_CHANGE = 0.8
+        self.JINGLE_PLAY_CHANGE = radioConfig['jinglePlayChange']
 
     async def playUrl(self, author, url):
         # get ydl info
@@ -21,7 +24,7 @@ class RadioController: # TODO: jdl error handle
         ffmpegAudio = AudioFactory.getAudioFromYdlInfo(ydlInfo)
 
         # create strategy
-        strategy = RadioStrategy(ydlInfo, author, ffmpegAudio, False, url)
+        strategy = RadioStrategy(ydlInfo, author, ffmpegAudio, hidden = False, url = url)
         # do tryPlay
         await self._tryPlay(strategy)
 
@@ -66,7 +69,7 @@ class RadioController: # TODO: jdl error handle
         ffmpegAudio = AudioFactory.getAudioFromSource(jingle['path'])
 
         # create strategy
-        strategy = SourceStrategy(jingle['name'], "Billy Radio", ffmpegAudio, True)
+        strategy = SourceStrategy(jingle['name'], "Billy Radio", ffmpegAudio, hidden = True)
         self.queue.append(strategy)
 
     async def say(self, author, value):
@@ -76,9 +79,9 @@ class RadioController: # TODO: jdl error handle
         ffmpegAudio = AudioFactory.getAudioFromSource(tts['path'])
 
         # create strategy
-        strategy = SourceStrategy(tts['name'], author, ffmpegAudio)
+        strategy = SourceStrategy(tts['name'], author, ffmpegAudio, hidden = True)
         # do tryPlay
-        await self._tryPlay(strategy, True)
+        await self._tryPlay(strategy, skipJingle=True, skipAddedMessage=True)
         
     async def pause(self):
         voiceClient = BillyController.getVoice()
@@ -154,13 +157,10 @@ class RadioController: # TODO: jdl error handle
         await MessageFactory.sendStrategyQueueMessage(BillyController.getChannel(), self.queue, page)
 
     async def _tryPlay(self, strategy, skipJingle = False, skipAddedMessage = False, skipPlayMessage = False):
-        # create added jingle variable
-        addedJingle = False
         # check if random lower than jingle change
         if not skipJingle and random.random() < self.JINGLE_PLAY_CHANGE:
             # play jingle
             self.playJingle()
-            addedJingle = True
             print("added jingle")
         # end if
 
@@ -179,13 +179,15 @@ class RadioController: # TODO: jdl error handle
 
         # check if voiceClient is active and not playing
         if voiceClient and not voiceClient.is_playing():
-            # check if not added jingle
-            if not addedJingle or not skipAddedMessage:
-                # send play message
-                await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
-
             # get strategy
             strategy = self.queue.pop(0)
+
+            # check if strategy is hidden
+            if not strategy.hidden:
+                # send play message
+                await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
+            # end if
+
             # play strategy and set _callbackPlay() as callback function
             strategy.execute(BillyController.getBot(), voiceClient, self._callbackPlay)
         # end if
@@ -207,8 +209,13 @@ class RadioController: # TODO: jdl error handle
         if voiceClient and not voiceClient.is_playing() and self.queue:
             # get strategy
             strategy = self.queue.pop(0)
-            # send play message
-            await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
+
+            # check if strategy is not hidden
+            if not strategy.hidden:
+                # send play message
+                await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
+            # end if
+
             # play strategy and set _callbackPlay() as callback function
             strategy.execute(BillyController.getBot(), voiceClient, self._callbackPlay)
         # end if
