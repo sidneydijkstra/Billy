@@ -36,7 +36,7 @@ class EmbeddedFactory:
         fillAmount = round(((toTime.total_seconds() - formatFromTime.total_seconds()) / toTime.total_seconds()) * 20)
         barAmount = 20 - fillAmount
 
-        return "%s %s%s %s" % (played, ('='*barAmount), ('-'*fillAmount), total)
+        return "%s %s%s %s" % (played, ('█'*barAmount), ('░'*fillAmount), total)
 
     # generate strategy queue message
     def generateStrategyQueueMessage(queue, page):

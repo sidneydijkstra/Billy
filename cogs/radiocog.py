@@ -39,6 +39,9 @@ class RadioCog(commands.Cog):
     async def now(self, ctx, *args):
         await self.radio.now()
 
+        # same bro
+        await ctx.message.delete()
+
     @commands.command(name="say")
     async def say(self, ctx, *args):
         if len(args) > 0:
