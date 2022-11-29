@@ -32,7 +32,7 @@ class AudioFactory:
         return ydlInfo
 
     def getYdlInfoFromSearch(search):
-        print(ydl.extract_info(f"ytsearch:{search}", download=False)['entries'][0])
+        #print(ydl.extract_info(f"ytsearch:{search}", download=False)['entries'][0])
         ydlInfo = ydl.extract_info(f"ytsearch:{search}", download=False)['entries'][0]
         return ydlInfo
 

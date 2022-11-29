@@ -15,6 +15,7 @@ from strategy.sourcestrategy import SourceStrategy
 class RadioController: # TODO: jdl error handle
     def __init__(self):
         self.queue = []
+        self.currentStrategy = None
         self.JINGLE_PLAY_CHANGE = optionsConfig['jinglePlayChange']
 
     async def playUrl(self, author, url):
@@ -64,6 +65,7 @@ class RadioController: # TODO: jdl error handle
         # check if file exists
         if jingle == None:
             return
+        # end if
 
         # get ffmpeg audio
         ffmpegAudio = AudioFactory.getAudioFromSource(jingle['path'])
@@ -71,6 +73,12 @@ class RadioController: # TODO: jdl error handle
         # create strategy
         strategy = SourceStrategy(jingle['name'], "Billy Radio", ffmpegAudio, hidden = True)
         self.queue.append(strategy)
+
+    
+    async def now(self):
+        if self.currentStrategy and not self.currentStrategy.hidden:
+            await MessageFactory.sendStrategyNowMessage(BillyController.getChannel(), self.currentStrategy)
+        # end if
 
     async def say(self, author, value):
         tts = FileFactory.generateTTSFile(value)
@@ -100,6 +108,9 @@ class RadioController: # TODO: jdl error handle
                     await MessageFactory.sendStrategyRemoveMessage(BillyController.getChannel(), self.queue[i])
                     self.queue.pop(i)
                     break
+                # end if
+            # end for
+        # end if
 
     async def stop(self):
         # get bot voice controller
@@ -108,6 +119,8 @@ class RadioController: # TODO: jdl error handle
         if voiceClient and voiceClient.is_playing():
             # clear queue
             self.queue.clear()
+            # clear current strategy
+            self.currentStrategy = None
             # send stop message
             await MessageFactory.sendStrategyStopMessage(BillyController.getChannel())
             # stop voice client
@@ -182,14 +195,17 @@ class RadioController: # TODO: jdl error handle
             # get strategy
             strategy = self.queue.pop(0)
 
+            # set current strategy
+            self.currentStrategy = strategy
+
+            # play strategy and set _callbackPlay() as callback function
+            strategy.execute(BillyController.getBot(), voiceClient, self._callbackPlay)
+
             # check if strategy is hidden
             if not strategy.hidden:
                 # send play message
                 await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
             # end if
-
-            # play strategy and set _callbackPlay() as callback function
-            strategy.execute(BillyController.getBot(), voiceClient, self._callbackPlay)
         # end if
 
         # check if voiceClient is active and playing
@@ -209,15 +225,18 @@ class RadioController: # TODO: jdl error handle
         if voiceClient and not voiceClient.is_playing() and self.queue:
             # get strategy
             strategy = self.queue.pop(0)
+            
+            # set current strategy
+            self.currentStrategy = strategy
+
+            # play strategy and set _callbackPlay() as callback function
+            strategy.execute(BillyController.getBot(), voiceClient, self._callbackPlay)
 
             # check if strategy is not hidden
             if not strategy.hidden:
                 # send play message
                 await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
             # end if
-
-            # play strategy and set _callbackPlay() as callback function
-            strategy.execute(BillyController.getBot(), voiceClient, self._callbackPlay)
         # end if
 
         # clear temp folder

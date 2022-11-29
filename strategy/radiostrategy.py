@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 
 from strategy.basestrategy import BaseStrategy
 from managers.csvmanager import CSVManager
@@ -8,7 +9,7 @@ class RadioStrategy(BaseStrategy):
         super().__init__(hidden)
         self.title = ydlInfo['title']
         self.uploader = ydlInfo['uploader']
-        self.duration = self.getDuration(ydlInfo['duration'])
+        self.duration = ydlInfo['duration']
         self.views = int(ydlInfo['view_count'])
         self.url = ydlInfo['formats'][0]['url']
         self.author = author
@@ -20,18 +21,17 @@ class RadioStrategy(BaseStrategy):
 
 
     def execute(self, bot, voiceClient, callback):
+        super().execute(bot, voiceClient, callback)
         voiceClient.play(self.ffmpegAudio, after=lambda ex: asyncio.run_coroutine_threadsafe(callback(), bot.loop))
 
     def getTitle(self):
-        return "%s [%s]" % (self.title, self.duration)
+        return "%s [%s]" % (self.title, self.getDuration())
 
     def getDescription(self):
         return "%d Views - By %s - id: %d" % (self.views, self.uploader, self.id)
 
-    def getDuration(self, duration):
-        m = round(duration / 60)
-        s = round(duration % 60)
-        return "%s:%s" % (str(m), str(s) if s > 9 else "0" + str(s))
+    def getDuration(self):
+        return datetime.timedelta(seconds=self.duration)
 
     def toString(self):
-        return ("[%d] request from: %s -> %s by %s : [%s] - %d views" % (self.id, self.author, self.title, self.uploader, self.duration, self.views))
+        return ("[%d] request from: %s -> %s by %s : [%s] - %d views" % (self.id, self.author, self.title, self.uploader, self.getDuration(), self.views))

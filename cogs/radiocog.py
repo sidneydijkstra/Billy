@@ -34,6 +34,11 @@ class RadioCog(commands.Cog):
         # embedded message with video, we dont want this!
         await ctx.message.delete()
 
+    
+    @commands.command(name="now")
+    async def now(self, ctx, *args):
+        await self.radio.now()
+
     @commands.command(name="say")
     async def say(self, ctx, *args):
         if len(args) > 0:

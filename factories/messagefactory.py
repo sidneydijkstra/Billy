@@ -55,6 +55,9 @@ class MessageFactory:
     async def sendStrategyPlayMessage(channel, strategy):
         await channel.send(messagesConfig['strategyPlayMessage'] % (strategy.author), embed=EmbeddedFactory.generateStrategyMessage(strategy))
 
+    async def sendStrategyNowMessage(channel, strategy):
+        await channel.send(messagesConfig['strategyNowMessage'], embed=EmbeddedFactory.generateStrategyMessage(strategy))
+
     async def sendStrategyStopMessage(channel):
         await channel.send("", embed=EmbeddedFactory.generateMessage(messagesConfig['strategyStopMessage']['title'], messagesConfig['strategyStopMessage']['description']))
 

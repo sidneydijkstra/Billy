@@ -10,10 +10,11 @@ class SourceStrategy(BaseStrategy):
         self.ffmpegAudio = ffmpegAudio
 
     def execute(self, bot, voiceClient, callback):
+        super().execute(bot, voiceClient, callback)
         voiceClient.play(self.ffmpegAudio, after=lambda ex: asyncio.run_coroutine_threadsafe(callback(), bot.loop))
 
     def getTitle(self):
-        return "%s [ER:OR]" % (self.title)
+        return "%s [TE:MP]" % (self.title)
 
     def getDescription(self):
         return "Een local nummertje op Billy Radio!"
