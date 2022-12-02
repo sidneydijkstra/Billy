@@ -117,6 +117,8 @@ class RadioController: # TODO: jdl error handle
         voiceClient = BillyController.getVoice()
         # check if voiceClient is active, is playing and queue is not empty
         if voiceClient and voiceClient.is_playing():
+            # set idle
+            await BillyController.setIdle()
             # clear queue
             self.queue.clear()
             # clear current strategy
@@ -132,6 +134,8 @@ class RadioController: # TODO: jdl error handle
         voiceClient = BillyController.getVoice()
         # check if voiceClient is active and playing
         if voiceClient and voiceClient.is_playing():
+            # set idle
+            await BillyController.setIdle()
             # check if queue is empty
             if len(self.queue) <= 0:
                 # send noskip message
@@ -203,6 +207,8 @@ class RadioController: # TODO: jdl error handle
 
             # check if strategy is hidden
             if not strategy.hidden:
+                # set activity status
+                await BillyController.setStatus(strategy.getTitle())
                 # send play message
                 await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
             # end if
@@ -234,6 +240,8 @@ class RadioController: # TODO: jdl error handle
 
             # check if strategy is not hidden
             if not strategy.hidden:
+                # set activity status
+                await BillyController.setStatus(strategy.getTitle())
                 # send play message
                 await MessageFactory.sendStrategyPlayMessage(BillyController.getChannel(), strategy)
             # end if

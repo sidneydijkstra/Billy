@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 embedColor = 0xff0000
 
+from factories.progressbarfactory import ProgressBarFactory
 from managers.configmanager import ConfigManager
 messagesConfig = ConfigManager.get('messages')
 
@@ -21,22 +22,16 @@ class EmbeddedFactory:
 
     # generate strategy message
     def generateStrategyMessage(strategy):
-        timeString = EmbeddedFactory.generateTimerString(strategy.getCurrentTimePlayed(), strategy.getDuration())
+        timeString = ProgressBarFactory.generateProgressFromTime(strategy.getCurrentTimePlayed(), strategy.getDuration())
+        embeddedBlock = discord.Embed(title=strategy.getTitle(), description=strategy.getDescription(), color=embedColor)
+        return embeddedBlock
+
+    # generate strategy message with progress bar
+    def generateStrategyProgressMessage(strategy):
+        timeString = ProgressBarFactory.generateProgressFromTime(strategy.getCurrentTimePlayed(), strategy.getDuration())
         description = "%s\n%s" % (timeString, strategy.getDescription())
         embeddedBlock = discord.Embed(title=strategy.getTitle(), description=description, color=embedColor)
         return embeddedBlock
-
-    # generate time string with display bar
-    def generateTimerString(fromTime, toTime):
-        formatFromTime = datetime.now() - fromTime
-        played = str(formatFromTime).split(".")[0]
-        total = toTime
-
-        # calculation to get values between 0 and 20
-        fillAmount = round(((toTime.total_seconds() - formatFromTime.total_seconds()) / toTime.total_seconds()) * 20)
-        barAmount = 20 - fillAmount
-
-        return "%s %s%s %s" % (played, ('█'*barAmount), ('░'*fillAmount), total)
 
     # generate strategy queue message
     def generateStrategyQueueMessage(queue, page):

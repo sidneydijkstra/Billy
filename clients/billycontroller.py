@@ -34,12 +34,24 @@ class BillyController:
                     print(channel)
 
     @staticmethod
+    async def setIdle():
+        # set activity status
+        await BillyController.getBot().change_presence(activity=None)
+
+    @staticmethod
+    async def setStatus(status):
+        # set activity status
+        await BillyController.getBot().change_presence(activity=discord.Game(status))
+
+    @staticmethod
     def getBot():
         return BillyController.bot
 
+    @staticmethod
     def getChannel():
         return BillyController.currentMessageChannel
 
+    @staticmethod
     def hasChannel():
         return BillyController.currentMessageChannel != None
 
@@ -83,7 +95,6 @@ class BillyController:
             await voiceClient[0].disconnect()
         # join new channel
         await user.voice.channel.connect()
-
 
     @staticmethod
     async def leaveChannel():
