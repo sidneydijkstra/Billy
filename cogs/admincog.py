@@ -2,9 +2,23 @@ import io, sys, traceback
 import discord
 from discord.ext import commands
 
+from clients.billycontroller import BillyController
+
 class AdminCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(name="setstatus", help = "- Set custom status of bot.")
+    @commands.is_owner()
+    async def setStatus(self, ctx, args):
+        if args:
+            await BillyController.setStatus(args)
+
+    
+    @commands.command(name="setidle", help = "- Set bot status to idle.")
+    @commands.is_owner()
+    async def setIdle(self, ctx):
+        await BillyController.setIdle()
 
     @commands.command(name="shutdown", aliases=["q", "quit"], help = "- Shutdown the bot.")
     @commands.is_owner()
