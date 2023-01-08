@@ -15,5 +15,5 @@ systemctl stop "$SERVICE_NAME"
 sudo rm -r "$STORAGE_DIR"
 sudo rm -r /etc/systemd/system/"$SERVICE_NAME"
 
-# Restart deamon service
-sudo systemctl deamon-reload
+# Restart daemon service
+sudo systemctl daemon-reload

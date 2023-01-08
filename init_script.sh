@@ -28,8 +28,8 @@ sudo chmod +x "$STORAGE_DIR"/startup.sh
 # Copy the billy.service file to /etc/systemd/billy
 cp "$SERVICE_PATH" "$SERVICE_DIR"
 
-# Restart deamon service
-sudo systemctl deamon-reload
+# Restart daemon service
+sudo systemctl daemon-reload
 # Enable the service to start automatically on boot
 sudo systemctl enable "$SERVICE_NAME"
 # Start the billy service

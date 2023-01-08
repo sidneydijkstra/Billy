@@ -1,1 +1,1 @@
-python3.7 ./main.py &> billy.log &
+python3.7 ./main.py

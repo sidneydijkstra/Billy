@@ -1,9 +1,9 @@
 {
   "system": {
     "name": "Robot Billy",
-    "version": "1.0",
-    "textChannel": "billy-test",
-    "commandPrefix": "$"
+    "version": "1.1",
+    "textChannel": "billy",
+    "commandPrefix": "!"
   },
   "options": {
     "jinglePlayChange": 0.5
