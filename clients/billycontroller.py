@@ -32,6 +32,8 @@ class BillyController:
                 if str(channel.type) == 'text' and channel.name == systemConfig['textChannel']:
                     BillyController.currentMessageChannel = channel
                     print(channel)
+        current_time = time.strftime('%H:%M:%S', time.gmtime())
+        BillyController.setStatus(f"Goedemorgen! {current_time}")
 
     @staticmethod
     async def setIdle():
