@@ -9,7 +9,7 @@ log_file: './depy.log'
 
 repository:
   path: ${{ variables.project_path }}
-  url: 'https://github.com/sidneydijkstra/Depy.git'
+  url: 'https://github.com/sidneydijkstra/Billy.git'
   branch: 'refactor'
 
 stages:
