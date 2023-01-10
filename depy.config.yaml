@@ -18,7 +18,7 @@ stages:
 
 init: 
   # Build the project using a specified script
-  - run: init_script.sh
+  - pull
 
 jobs:
 
@@ -47,6 +47,7 @@ jobs:
           systemctl daemon-reload
           systemctl enable ${{ variables.service_name }}
           systemctl start ${{ variables.service_name }}
+          rm -r ${{ variables.project_path }}
   test:
     steps:
       # Run tests using the specified test command
