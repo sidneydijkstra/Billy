@@ -1,0 +1,63 @@
+variables:
+  project_path: './_dclone'
+  service_name: 'billy.service'
+  service_path: '/etc/systemd/system/billy.service'
+  service_startup: /bin/bash ./startup.sh
+  storage_path: '/var/billy'
+
+log_file: './depy.log'
+
+repository:
+  path: ${{ variables.project_path }}
+  url: 'https://github.com/sidneydijkstra/Depy.git'
+  branch: 'test'
+
+stages:
+  - pull
+  - test
+
+init: 
+  # Build the project using a specified script
+  - run: init_script.sh
+
+jobs:
+
+  pull:
+    steps:
+      # Pull out the repository
+      - pull
+      # Create the service file
+      - touch: 
+        path: ${{ variables.service_path }}
+        content: |
+          [Unit]
+          Description=The Billy Discord bot
+
+          [Service]
+          WorkingDirectory=${{ variables.storage_path }}
+          ExecStart=${{ variables.service_startup }}
+          Restart=always
+          RestartSec=3
+
+          [Install]
+          WantedBy=multi-user.target
+      - run: |
+          systemctl stop ${{ variables.service_name }}
+          cp -r ${{ variables.project_path }} ${{ variables.service_path }}
+          systemctl daemon-reload
+          systemctl enable ${{ variables.service_name }}
+          systemctl start ${{ variables.service_name }}
+  test:
+    steps:
+      # Run tests using the specified test command
+      - run: |
+          echo "this is a test"
+
+sleep_time: 30
+
+mailer:
+  enable: False
+  url: 'smtp.example.com'
+  user: 'user@example.com'
+  password: 'password'
+  to: 'recipient@example.com'
