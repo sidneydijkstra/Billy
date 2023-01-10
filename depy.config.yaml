@@ -10,7 +10,7 @@ log_file: './depy.log'
 repository:
   path: ${{ variables.project_path }}
   url: 'https://github.com/sidneydijkstra/Depy.git'
-  branch: 'test'
+  branch: 'refactor'
 
 stages:
   - pull
@@ -47,7 +47,6 @@ jobs:
           systemctl daemon-reload
           systemctl enable ${{ variables.service_name }}
           systemctl start ${{ variables.service_name }}
-          rm -r ${{ variables.project_path }}
   test:
     steps:
       # Run tests using the specified test command
