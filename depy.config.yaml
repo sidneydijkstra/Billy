@@ -43,7 +43,7 @@ jobs:
           WantedBy=multi-user.target
       - run: |
           systemctl stop ${{ variables.service_name }}
-          cp -r ${{ variables.project_path }} ${{ variables.service_path }}
+          cp -r ${{ variables.project_path }} ${{ variables.storage_path }}
           systemctl daemon-reload
           systemctl enable ${{ variables.service_name }}
           systemctl start ${{ variables.service_name }}
