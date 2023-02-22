@@ -10,13 +10,12 @@ class AdminCog(commands.Cog):
 
     @commands.command(name="stamp", help = "- Print the depy stamp if it exists")
     async def stamp(self, ctx):
-        message = await ctx.fetch_message(ctx.message.reference.message_id)
         try:
             with open('./depy.stamp', 'r') as file:
                 content = file.read()
-                await message.channel.send("```\n" + content + "\n```")
+                await ctx.message.channel.send("```\n" + content + "\n```")
         except FileNotFoundError:
-                await message.channel.send("```\nCan't find depy stamp\n```")
+                await ctx.message.channel.send("```\nCan't find depy stamp\n```")
 
     @commands.command(name="setstatus", help = "- Set custom status of bot.")
     @commands.is_owner()
