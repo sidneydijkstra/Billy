@@ -8,7 +8,7 @@ class AdminCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="stamp", help = "- Print the depy stamp if it exists")
+    @commands.command(name="stamp", help = "- Print the depy CI/CD stamp if it exists")
     async def stamp(self, ctx):
         message = await ctx.fetch_message(ctx.message.reference.message_id)
         try:
