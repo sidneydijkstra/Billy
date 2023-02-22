@@ -1,7 +1,8 @@
 variables:
   project_path: './_dclone'
 
-log_file: './depy.log'
+log_file: 'depy.log'
+stamp_path: 'depy.stamp'
 
 repository:
   force_rebuild: false
