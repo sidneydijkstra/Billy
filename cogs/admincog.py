@@ -4,6 +4,7 @@ from discord.ext import commands
 
 from clients.billycontroller import BillyController
 
+# upd
 class AdminCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
