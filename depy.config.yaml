@@ -1,52 +1,39 @@
 variables:
   project_path: './_dclone'
-  service_name: 'billy.service'
-  service_path: '/etc/systemd/system/billy.service'
-  service_startup: /bin/bash ./startup.sh
-  storage_path: '/var/billy'
 
 log_file: './depy.log'
 
 repository:
+  force_rebuild: false
+  init: true
   path: ${{ variables.project_path }}
   url: 'https://github.com/sidneydijkstra/Billy.git'
   branch: 'refactor'
 
 stages:
-  - pull
+  - build
   - test
 
-init: 
-  # Build the project using a specified script
-  - pull
-
 jobs:
-
-  pull:
+  build:
     steps:
+      # Stop the service if it is running
+      - service-stop: billy.service
       # Pull out the repository
       - pull
       # Create the service file
-      - touch: 
-        path: ${{ variables.service_path }}
-        content: |
-          [Unit]
-          Description=The Billy Discord bot
-
-          [Service]
-          WorkingDirectory=${{ variables.storage_path }}
-          ExecStart=${{ variables.service_startup }}
-          Restart=always
-          RestartSec=3
-
-          [Install]
-          WantedBy=multi-user.target
+      - service-create:
+          name: billy.service
+          directory: /var/billy
+          description: The Billy Discord bot
+          command: /bin/bash ./startup.sh
+      # Run the build command
       - run: |
-          systemctl stop ${{ variables.service_name }}
-          cp -r ${{ variables.project_path }} ${{ variables.storage_path }}
-          systemctl daemon-reload
-          systemctl enable ${{ variables.service_name }}
-          systemctl start ${{ variables.service_name }}
+          cp -r ${{ variables.project_path }} /var/billy
+      # Enable the service so it starts on boot
+      - service-enable: billy.service
+      # Start the service
+      - service-start: billy.service
   test:
     steps:
       # Run tests using the specified test command
