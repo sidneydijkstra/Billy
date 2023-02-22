@@ -1,6 +1,8 @@
 
 # Billy  
-A Discord bot programmed in python using the [discord.py](https://discordpy.readthedocs.io/en/stable/) api!  
+A Discord bot programmed in python using the [discord.py](https://discordpy.readthedocs.io/en/stable/) api!
+
+*Now intergrated with [Depy](https://github.com/sidneydijkstra/Depy)!
 
 ### Dependencies
 For this bot to run you have to install the requirements.txt file with pip.  
