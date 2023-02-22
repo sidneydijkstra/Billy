@@ -30,6 +30,7 @@ jobs:
           command: /bin/bash ./startup.sh
       # Run the build command
       - run: |
+          rm -r /var/billy
           cp -r ${{ variables.project_path }} /var/billy
       # Enable the service so it starts on boot
       - service-enable: billy.service
